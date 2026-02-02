@@ -10,6 +10,6 @@ A robust database system designed to handle complex event scheduling, user trans
 * **Complex Queries:** Utilized Joins and Aggregations to generate real-time reports.
 
 ## Tech Stack
-* **Language:** Python, SQL
+* **Language:** Java, SQL
 * **Database:** Relational Database Management System (RDBMS)
 * **Concepts:** 3NF Normalization, ER Modeling, Query Optimization
