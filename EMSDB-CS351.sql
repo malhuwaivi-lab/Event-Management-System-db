@@ -1,0 +1,47 @@
+create database EMSDB;
+use EMSDB;
+
+CREATE TABLE Users (
+  UserID INT AUTO_INCREMENT PRIMARY KEY,
+  Name VARCHAR(100) NOT NULL,
+  Email VARCHAR(150) NOT NULL UNIQUE,
+  Role ENUM('Admin','Organizer','Attendee') NOT NULL
+);
+
+CREATE TABLE Events (
+  EventID INT AUTO_INCREMENT PRIMARY KEY,
+  OrganizerID INT NOT NULL,
+  Title VARCHAR(200) NOT NULL,
+  Description TEXT,
+  EventDate DATE NOT NULL,
+  EventTime TIME NOT NULL,
+  Location VARCHAR(200),
+  ApprovalStatus ENUM('Pending','Approved','Rejected') DEFAULT 'Pending',
+  FOREIGN KEY (OrganizerID) REFERENCES Users(UserID)
+);
+
+CREATE TABLE Tickets (
+  TicketID INT AUTO_INCREMENT PRIMARY KEY,
+  EventID INT NOT NULL,
+  Type VARCHAR(50) NOT NULL,
+  Price DECIMAL(10,2) NOT NULL,
+  Quantity INT NOT NULL,
+  FOREIGN KEY (EventID) REFERENCES Events(EventID) ON DELETE CASCADE
+);
+
+CREATE TABLE Bookings (
+  BookingID INT AUTO_INCREMENT PRIMARY KEY,
+  UserID INT NOT NULL,
+  BookingDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  Status ENUM('Pending','Paid','Failed') DEFAULT 'Pending',
+  FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);
+
+CREATE TABLE BookingItems (
+  BookingItemID INT AUTO_INCREMENT PRIMARY KEY,
+  BookingID INT NOT NULL,
+  TicketID INT NOT NULL,
+  Quantity INT NOT NULL,
+  FOREIGN KEY (BookingID) REFERENCES Bookings(BookingID) ON DELETE CASCADE,
+  FOREIGN KEY (TicketID) REFERENCES Tickets(TicketID) ON DELETE CASCADE
+);
